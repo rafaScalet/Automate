@@ -1,10 +1,5 @@
-import { HelloWorld } from '@/components';
-import { Container } from '@/layouts';
+import { Router } from '@/Router';
 
 export function App() {
-  return (
-    <Container>
-      <HelloWorld />
-    </Container>
-  );
+  return <Router />;
 }

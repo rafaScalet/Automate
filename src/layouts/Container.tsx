@@ -1,11 +1,13 @@
-import type { PropsWithChildren } from 'react';
+import { Outlet } from 'react-router';
+import { NavBar } from '@/components/navbar';
 
-interface ContainerProps extends PropsWithChildren {}
-
-export function Container({ children }: ContainerProps) {
+export function Container() {
   return (
-    <div className="flex min-h-screen max-w-screen items-center justify-center bg-white font-inter text-black dark:bg-zinc-900 dark:text-white">
-      {children}
+    <div className="grid min-h-screen grid-rows-[auto_1fr] bg-white text-black dark:bg-zinc-800 dark:text-white">
+      <NavBar />
+      <main className="m-5 flex items-center justify-center">
+        <Outlet />
+      </main>
     </div>
   );
 }

@@ -2,6 +2,6 @@
   "recommendations": [
     "biomejs.biome",
     "bradlc.vscode-tailwindcss",
-    "antfu.iconify",
+    "antfu.iconify"
   ]
 }
