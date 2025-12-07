@@ -3,7 +3,7 @@ import { Card } from '@/components/ui/Card';
 
 interface TrashCardProps {
   id: string;
-  leitura?: number; 
+  leitura?: number;
   config?: {
     nome?: string;
     alturaTotal?: number;
