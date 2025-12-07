@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router';
 import { RouterProvider } from 'react-router/dom';
 import { Container } from '@/layouts';
-import { Dashboard, Registration } from '@/pages';
+import { Dashboard, NotFound, Registration } from '@/pages';
 
 const router = createBrowserRouter([
   {
@@ -10,6 +10,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, Component: Dashboard },
       { path: 'new', Component: Registration },
+      { path: '*', Component: NotFound },
     ],
   },
 ]);
