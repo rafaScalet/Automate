@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router';
-import { NavBar } from '@/components/navbar';
 import { useAuth } from '@/components/auth/AuthProvider';
+import { NavBar } from '@/components/navbar';
 import { Auth } from '@/pages/Auth';
 
 export function Container() {
@@ -15,7 +15,7 @@ export function Container() {
           </main>
         </div>
       ) : (
-        <div className="flex items-center justify-center min-h-screen pt-7">
+        <div className="flex min-h-screen items-center justify-center pt-7">
           <Auth />
         </div>
       )}

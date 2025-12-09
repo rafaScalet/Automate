@@ -7,24 +7,57 @@ interface TrashCardProps {
   config?: {
     nome?: string;
     alturaTotal?: number;
+    // aceitamos tanto alturaAltura (se já existir) quanto alturaTampa (mais claro)
+    alturaAltura?: number;
+    alturaTampa?: number;
     localizacao?: { lat: number; lng: number };
   };
 }
 
 export function TrashCard({ id, leitura = 0, config }: TrashCardProps) {
   // Configurações padrão se não houver cadastro
-  const alturaTotal = config?.alturaTotal || 100;
+  const alturaTotal = config?.alturaTotal ?? 100;
   const nome = config?.nome || `Sensor (${id})`;
 
-  // Lógica de porcentagem (Inversa: Sensor mede vazio)
-  const alturaLixo = alturaTotal - leitura;
-  let percent = Math.round((alturaLixo / alturaTotal) * 100);
+  // --- Nova lógica baseada no seu pedido ---
+  // altura da tampa (prefere alturaTampa, senão fallback para alturaAltura)
+  const alturaTampa = config?.alturaTampa ?? config?.alturaAltura ?? 0;
 
-  // Limites seguros
-  if (percent < 0) percent = 0;
-  if (percent > 100) percent = 100;
+  // altura útil (usable height) = total - tampa
+  const usableHeight = Math.max(0, alturaTotal - alturaTampa);
 
-  // Status visual
+  // Assumimos: leitura = distância medida pelo sensor desde o topo (sensor na tampa) até a superfície do lixo.
+  // Portanto: occupiedHeight = usableHeight - leitura
+  let sensorReading = leitura;
+
+  // Normaliza leitura para o intervalo [0, usableHeight]
+  if (sensorReading < 0) sensorReading = 0;
+  if (sensorReading > usableHeight) sensorReading = usableHeight;
+
+  const occupiedHeight = Math.max(0, usableHeight - sensorReading);
+
+  // Percentual baseado em usableHeight (0..100)
+  let percent =
+    usableHeight > 0 ? Math.round((occupiedHeight / usableHeight) * 100) : 0;
+  percent = Math.max(0, Math.min(100, percent));
+
+  // Mapear status com as faixas que você sugeriu (usando percent)
+  // Faixas (baseadas no seu exemplo de 40cm usable):
+  // 100% -> TRANSBORDANDO
+  // >=80 -> CHEIO
+  // >=60 -> OCUPAÇÃO
+  // >=40 -> OCUPAÇÃO (mantive o mesmo label, mas pode ajustar)
+  // >=20 -> VAZIO (você usou 20% -> VAZIO no exemplo)
+  // <20 -> VAZIO
+  let statusLabel = 'VAZIO';
+  if (percent >= 100) statusLabel = 'TRANSBORDANDO';
+  else if (percent >= 80) statusLabel = 'CHEIO';
+  else if (percent >= 60) statusLabel = 'PARCIALMENTE CHEIA';
+  else if (percent >= 40) statusLabel = 'EM USO';
+  else statusLabel = 'VAZIO';
+
+  // Mantive a lógica de cores, mas agora baseada nas faixas que você descreveu.
+  // Você pode ajustar classes Tailwind conforme preferir.
   let statusColor = 'text-green-600 bg-green-500';
   let borderColor = 'border-green-500';
   let bgCard = 'bg-green-50 dark:bg-green-900/10';
@@ -34,6 +67,7 @@ export function TrashCard({ id, leitura = 0, config }: TrashCardProps) {
     borderColor = 'border-yellow-500';
     bgCard = 'bg-yellow-50 dark:bg-yellow-900/10';
   }
+
   if (percent >= 80) {
     statusColor = 'text-red-600 bg-red-500';
     borderColor = 'border-red-500';
@@ -64,7 +98,7 @@ export function TrashCard({ id, leitura = 0, config }: TrashCardProps) {
           {percent}%
         </span>
         <span className="font-medium text-sm opacity-60 dark:text-white">
-          Ocupação
+          {statusLabel}
         </span>
       </div>
 
@@ -80,6 +114,8 @@ export function TrashCard({ id, leitura = 0, config }: TrashCardProps) {
         <div className="flex flex-col">
           <span>Leitura: {leitura.toFixed(1)} cm</span>
           <span>Total: {alturaTotal} cm</span>
+          <span>Altura tampa: {alturaTampa} cm</span>
+          <span>Altura útil: {usableHeight} cm</span>
         </div>
 
         {config?.localizacao && (

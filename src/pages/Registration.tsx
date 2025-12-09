@@ -5,8 +5,8 @@ import { type TrashItem, TrashList } from '@/components/registration/TrashList';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
-import { db } from '@/firebaseConfig';
 import { notify } from '@/components/ui/notify';
+import { db } from '@/firebaseConfig';
 
 interface FirebaseLixeiraNode {
   config?: {

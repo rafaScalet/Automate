@@ -1,7 +1,3 @@
-import type { AuthContextType } from '@/components/auth/AuthContextType';
-
-import { notify } from '@/components/ui/notify';
-import { auth, googleProvider } from '@/firebaseConfig';
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
@@ -11,6 +7,9 @@ import {
   type User,
 } from 'firebase/auth';
 import { createContext, useContext, useEffect, useState } from 'react';
+import type { AuthContextType } from '@/components/auth/AuthContextType';
+import { notify } from '@/components/ui/notify';
+import { auth, googleProvider } from '@/firebaseConfig';
 import { Loading } from '../ui/Loading';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);

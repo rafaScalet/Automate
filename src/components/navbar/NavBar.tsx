@@ -1,5 +1,5 @@
-import { useAuth } from '@/components/auth/AuthProvider';
 import { Icon } from '@iconify/react';
+import { useAuth } from '@/components/auth/AuthProvider';
 import { NavButton } from './NavButton';
 
 export function NavBar() {

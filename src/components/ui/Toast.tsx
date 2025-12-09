@@ -39,7 +39,11 @@ export function Toast({ message, type, onClose }: ToastProps) {
   return (
     <div
       className={`fixed top-4 right-4 z-50 flex items-center gap-3 rounded-lg px-4 py-3 shadow-lg ${styles[type ?? 'success']} transition-all duration-300 ${
-        isLeaving ? 'translate-x-[400px] opacity-0' : isEntering ? 'translate-x-[400px] opacity-0' : 'translate-x-0 opacity-100'
+        isLeaving
+          ? 'translate-x-[400px] opacity-0'
+          : isEntering
+            ? 'translate-x-[400px] opacity-0'
+            : 'translate-x-0 opacity-100'
       }`}
     >
       <Icon icon={icons[type ?? 'success']} className="h-5 w-5" />

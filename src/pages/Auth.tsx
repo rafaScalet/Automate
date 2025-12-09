@@ -1,11 +1,11 @@
+import { Icon } from '@iconify/react';
+import { useState } from 'react';
 import { useAuth } from '@/components/auth/AuthProvider';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
 import { Loading } from '@/components/ui/Loading';
 import { notify } from '@/components/ui/notify';
-import { Icon } from '@iconify/react';
-import { useState } from 'react';
 
 export function Auth({ children }: { children?: React.ReactNode }) {
   const { user, signInWithGoogle, logout, loginWithEmail, registerWithEmail } =
@@ -47,7 +47,7 @@ export function Auth({ children }: { children?: React.ReactNode }) {
         <div>{children}</div>
       ) : (
         <Card>
-          <div className="flex flex-col gap-4 w-96">
+          <div className="flex w-96 flex-col gap-4">
             <form onSubmit={handleSubmit} className="space-y-4">
               <Input
                 id="email"
@@ -87,10 +87,10 @@ export function Auth({ children }: { children?: React.ReactNode }) {
 
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300 dark:border-zinc-600" />
+                <div className="w-full border-gray-300 border-t dark:border-zinc-600" />
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="bg-white dark:bg-zinc-900 px-2 text-gray-500">
+                <span className="bg-white px-2 text-gray-500 dark:bg-zinc-900">
                   ou
                 </span>
               </div>
@@ -103,7 +103,7 @@ export function Auth({ children }: { children?: React.ReactNode }) {
             <div className="flex flex-col gap-2">
               <button
                 type="button"
-                className="text-sm text-gray-600 hover:text-green-600 dark:text-gray-400 dark:hover:text-green-500 transition-colors text-center"
+                className="text-center text-gray-600 text-sm transition-colors hover:text-green-600 dark:text-gray-400 dark:hover:text-green-500"
                 onClick={() => setIsRegister(!isRegister)}
               >
                 {isRegister
@@ -112,7 +112,7 @@ export function Auth({ children }: { children?: React.ReactNode }) {
               </button>
               <button
                 type="button"
-                className="text-sm text-gray-600 hover:text-green-600 dark:text-gray-400 dark:hover:text-green-500 transition-colors text-center"
+                className="text-center text-gray-600 text-sm transition-colors hover:text-green-600 dark:text-gray-400 dark:hover:text-green-500"
                 onClick={() => alert('Funcionalidade não implementada')}
               >
                 Esqueci minha senha
