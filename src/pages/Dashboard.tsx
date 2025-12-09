@@ -3,27 +3,8 @@ import { onValue, ref } from 'firebase/database';
 import { useEffect, useState } from 'react';
 import { TrashCard } from '@/components/dashboard/Trashcard';
 import { db } from '@/firebaseConfig';
-
-interface Leitura {
-  valor: number;
-  timestamp: number;
-}
-
-interface Config {
-  nome?: string;
-  alturaTotal?: number;
-  localizacao?: {
-    lat: number;
-    lng: number;
-  };
-}
-
-interface LixeiraData {
-  leituras?: {
-    atual?: Leitura;
-  };
-  config?: Config;
-}
+import type { LixeiraData } from '@/components/dashboard/interfaces/Lixeira';
+import { Loading } from '@/components/ui/Loading';
 
 type LixeirasState = Record<string, LixeiraData>;
 
@@ -41,12 +22,7 @@ export function Dashboard() {
   }, []);
 
   if (loading) {
-    return (
-      <div className="flex h-full items-center justify-center gap-2">
-        <Icon icon="lucide:loader-2" className="animate-spin" />
-        Carregando...
-      </div>
-    );
+    return <Loading />;
   }
 
   return (

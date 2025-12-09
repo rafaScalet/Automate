@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
 import { db } from '@/firebaseConfig';
+import { notify } from '@/components/ui/notify';
 
 interface FirebaseLixeiraNode {
   config?: {
@@ -14,6 +15,16 @@ interface FirebaseLixeiraNode {
     localizacao?: {
       lat?: number;
       lng?: number;
+    };
+  };
+  leituras?: {
+    anterior?: {
+      timestamp?: number;
+      valor?: number;
+    };
+    atual?: {
+      timestamp?: number;
+      valor?: number;
     };
   };
 }
@@ -69,21 +80,37 @@ export function Registration() {
 
     try {
       // Salva no caminho: lixeiras/{ID}/config
-      await update(ref(db, `lixeiras/${form.sensorId}/config`), {
-        nome: form.nome,
-        localizacao: {
-          lat: Number(form.latitude),
-          lng: Number(form.longitude),
+      await update(ref(db, `lixeiras/${form.sensorId}`), {
+        config: {
+          nome: form.nome,
+          localizacao: {
+            lat: Number(form.latitude),
+            lng: Number(form.longitude),
+          },
+          alturaTotal: Number(form.alturaTotal),
+          updatedAt: Date.now(),
         },
-        alturaTotal: Number(form.alturaTotal),
-        updatedAt: Date.now(),
+        leituras: {
+          anterior: {
+            timestamp: 0,
+            valor: 0,
+          },
+          atual: {
+            timestamp: 0,
+            valor: 0,
+          },
+        },
       });
 
-      alert(isEditing ? 'Lixeira atualizada!' : 'Lixeira cadastrada!');
+      notify(
+        isEditing
+          ? 'Lixeira atualizada com sucesso!'
+          : 'Lixeira cadastrada com sucesso!',
+      );
       resetForm();
     } catch (error) {
       console.error(error);
-      alert('Erro ao salvar.');
+      notify('Erro ao salvar lixeira', 'error');
     } finally {
       setLoading(false);
     }
@@ -94,8 +121,9 @@ export function Registration() {
     if (confirm(`Tem certeza que deseja apagar a ${id}?`)) {
       try {
         await remove(ref(db, `lixeiras/${id}`));
+        notify('Lixeira removida com sucesso!', 'success');
       } catch (_error) {
-        alert('Erro ao deletar');
+        notify('Erro ao deletar lixeira', 'error');
       }
     }
   };
@@ -182,6 +210,7 @@ export function Registration() {
               label="Altura (cm)"
               type="number"
               value={form.alturaTotal}
+              min={0}
               onChange={(e) =>
                 setForm({ ...form, alturaTotal: e.target.value })
               }
