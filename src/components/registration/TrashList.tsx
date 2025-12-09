@@ -4,6 +4,7 @@ export interface TrashItem {
   sensorId: string;
   nome: string;
   alturaTotal: string;
+  alturaTampa: string;
   latitude: string;
   longitude: string;
 }
@@ -38,6 +39,7 @@ export function TrashList({ items, onEdit, onDelete }: TrashListProps) {
               <th className="px-6 py-3">ID Sensor</th>
               <th className="px-6 py-3">Nome</th>
               <th className="px-6 py-3">Altura</th>
+              <th className="px-6 py-3">Tampa</th>
               <th className="px-6 py-3 text-right">Ações</th>
             </tr>
           </thead>
@@ -54,6 +56,7 @@ export function TrashList({ items, onEdit, onDelete }: TrashListProps) {
                   {item.nome}
                 </td>
                 <td className="px-6 py-4">{item.alturaTotal} cm</td>
+                <td className="px-6 py-4">{item.alturaTampa} cm</td>
                 <td className="flex justify-end gap-2 px-6 py-4 text-right">
                   {/* O componente Button já cuida do ícone internamente */}
                   <Button
