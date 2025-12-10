@@ -7,7 +7,7 @@ import {
 import { createContext, useContext, useEffect, useState } from 'react';
 import type { AuthContextType } from '@/components/auth/AuthContextType';
 import { notify } from '@/components/ui/notify';
-import { auth, googleProvider } from '@/firebaseConfig';
+import { auth } from '@/firebaseConfig';
 import { Loading } from '../ui/Loading';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);

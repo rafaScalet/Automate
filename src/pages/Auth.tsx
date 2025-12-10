@@ -1,4 +1,3 @@
-import { Icon } from '@iconify/react';
 import { useState } from 'react';
 import { useAuth } from '@/components/auth/AuthProvider';
 import { Button } from '@/components/ui/Button';
