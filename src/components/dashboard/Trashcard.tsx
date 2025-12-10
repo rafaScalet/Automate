@@ -144,6 +144,15 @@ export function TrashCard({ id, leitura = 0, config }: TrashCardProps) {
     statusLabel = 'NORMAL';
   }
 
+  let actionMessage = null;
+  if (percent >= 120) {
+    actionMessage = "🚨 COLETAR IMEDIATAMENTE!";
+  } else if (percent >= 100) {
+    actionMessage = "⚠️ Agendar coleta urgente";
+  } else if (percent >= 80) {
+    actionMessage = "ℹ️ Planejar rota em breve";
+  }
+
   return (
     <Card
       className={`relative overflow-hidden border-l-4 transition-all hover:shadow-md ${borderColor} ${bgCard}`}
@@ -177,6 +186,20 @@ export function TrashCard({ id, leitura = 0, config }: TrashCardProps) {
           {statusLabel}
         </span>
       </div>
+
+      {actionMessage && (
+        <div className="mt-2 rounded-md bg-white/50 px-2 py-1 text-center font-semibold text-xs shadow-sm dark:bg-black/30">
+          <span
+            className={
+              percent >= 100
+                ? 'text-red-700 dark:text-red-300'
+                : 'text-orange-700 dark:text-orange-300'
+            }
+          >
+            {actionMessage}
+          </span>
+        </div>
+      )}
 
       {/* Barra de progresso */}
       <div className="mt-4 h-3 w-full overflow-hidden rounded-full bg-gray-200 dark:bg-zinc-700">
