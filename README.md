@@ -1,5 +1,10 @@
 # 🗑️ Automate | Smart Waste Monitor
 
+## links
+- [Firebase](https://console.firebase.google.com/project/automate-52c0d/overview?hl=pt-br)
+- [Slides/Gamma](https://gamma.app/docs/Projeto-Automate-Lixeira-Inteligente-o22hp5ilv8cbtsv)
+- [Documentação](./Doc-Automate.pdf)
+
 > **Sistema Integrado de Gestão de Resíduos Urbanos via IoT**
 
     
