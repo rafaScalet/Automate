@@ -5,13 +5,14 @@ import { type TrashItem, TrashList } from '@/components/registration/TrashList';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
-import { db } from '@/firebaseConfig';
 import { notify } from '@/components/ui/notify';
+import { db } from '@/firebaseConfig';
 
 interface FirebaseLixeiraNode {
   config?: {
     nome?: string;
     alturaTotal?: number;
+    alturaTampa?: number;
     localizacao?: {
       lat?: number;
       lng?: number;
@@ -40,6 +41,7 @@ export function Registration() {
     latitude: '',
     longitude: '',
     alturaTotal: '',
+    alturaTampa: '',
   });
 
   // 1. Ler dados do Firebase (Read)
@@ -63,6 +65,7 @@ export function Registration() {
             latitude: String(node.config?.localizacao?.lat || ''),
             longitude: String(node.config?.localizacao?.lng || ''),
             alturaTotal: String(node.config?.alturaTotal || ''),
+            alturaTampa: String(node.config?.alturaTampa || ''),
           };
         },
       );
@@ -88,6 +91,7 @@ export function Registration() {
             lng: Number(form.longitude),
           },
           alturaTotal: Number(form.alturaTotal),
+          alturaTampa: Number(form.alturaTampa),
           updatedAt: Date.now(),
         },
         leituras: {
@@ -143,6 +147,7 @@ export function Registration() {
       latitude: '',
       longitude: '',
       alturaTotal: '',
+      alturaTampa: '',
     });
     setIsEditing(false);
   };
@@ -188,10 +193,38 @@ export function Registration() {
             />
           </div>
 
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 gap-4">
+            <Input
+              id="alt"
+              label="Altura (cm)"
+              placeholder="Ex: 100cm"
+              type="number"
+              value={form.alturaTotal}
+              min={0}
+              onChange={(e) =>
+                setForm({ ...form, alturaTotal: e.target.value })
+              }
+              required
+            />
+            <Input
+              id="alt"
+              label="Altura Tampa (cm)"
+              placeholder="Ex: 14cm"
+              type="number"
+              value={form.alturaTampa}
+              min={0}
+              onChange={(e) =>
+                setForm({ ...form, alturaTampa: e.target.value })
+              }
+              required
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
             <Input
               id="lat"
               label="Latitude"
+              placeholder="Ex: -23.5503"
               type="number"
               step="any"
               value={form.latitude}
@@ -200,21 +233,11 @@ export function Registration() {
             <Input
               id="lng"
               label="Longitude"
+              placeholder="Ex: -46.6342"
               type="number"
               step="any"
               value={form.longitude}
               onChange={(e) => setForm({ ...form, longitude: e.target.value })}
-            />
-            <Input
-              id="alt"
-              label="Altura (cm)"
-              type="number"
-              value={form.alturaTotal}
-              min={0}
-              onChange={(e) =>
-                setForm({ ...form, alturaTotal: e.target.value })
-              }
-              required
             />
           </div>
 

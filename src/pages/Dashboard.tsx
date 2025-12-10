@@ -1,10 +1,10 @@
 import { Icon } from '@iconify/react';
 import { onValue, ref } from 'firebase/database';
 import { useEffect, useState } from 'react';
-import { TrashCard } from '@/components/dashboard/Trashcard';
-import { db } from '@/firebaseConfig';
 import type { LixeiraData } from '@/components/dashboard/interfaces/Lixeira';
+import { TrashCard } from '@/components/dashboard/Trashcard';
 import { Loading } from '@/components/ui/Loading';
+import { db } from '@/firebaseConfig';
 
 type LixeirasState = Record<string, LixeiraData>;
 

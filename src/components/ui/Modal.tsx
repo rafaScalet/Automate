@@ -24,11 +24,19 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div className="absolute inset-0 bg-black/50" onClick={onClose} />
+      <button
+        type="button"
+        className="absolute inset-0 bg-black/50"
+        onClick={onClose}
+        aria-label="Close modal"
+      />
       <div className="relative z-10 w-full max-w-md rounded-lg bg-white p-6 shadow-xl dark:bg-zinc-900">
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white">{title}</h2>
+          <h2 className="font-bold text-gray-900 text-xl dark:text-white">
+            {title}
+          </h2>
           <button
+            type="button"
             onClick={onClose}
             className="rounded p-1 text-gray-500 hover:bg-gray-100 dark:hover:bg-zinc-800"
           >

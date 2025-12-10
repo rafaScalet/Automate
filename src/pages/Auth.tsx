@@ -1,10 +1,11 @@
+import { Icon } from '@iconify/react';
+import { useState } from 'react';
 import { useAuth } from '@/components/auth/AuthProvider';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
 import { Loading } from '@/components/ui/Loading';
 import { notify } from '@/components/ui/notify';
-import { useState } from 'react';
 
 export function Auth({ children }: { children?: React.ReactNode }) {
   const { user, loginWithEmail } = useAuth();
@@ -36,7 +37,7 @@ export function Auth({ children }: { children?: React.ReactNode }) {
         <div>{children}</div>
       ) : (
         <Card>
-          <div className="flex flex-col gap-4 w-96">
+          <div className="flex w-96 flex-col gap-4">
             <form onSubmit={handleSubmit} className="space-y-4">
               <Input
                 id="email"
