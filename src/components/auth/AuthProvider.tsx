@@ -1,12 +1,10 @@
 import type { AuthContextType } from '@/components/auth/AuthContextType';
 
 import { notify } from '@/components/ui/notify';
-import { auth, googleProvider } from '@/firebaseConfig';
+import { auth } from '@/firebaseConfig';
 import {
-  createUserWithEmailAndPassword,
   onAuthStateChanged,
   signInWithEmailAndPassword,
-  signInWithPopup,
   signOut,
   type User,
 } from 'firebase/auth';
@@ -22,7 +20,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       if (currentUser) {
-        notify(`Bem-vindo, ${currentUser.displayName}!`, 'success');
+        notify(`Logado como ${currentUser.email}`, 'success');
       } else {
         notify('Você saiu com sucesso.', 'info');
       }
@@ -30,19 +28,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
     return () => unsubscribe();
   }, []);
-
-  const signInWithGoogle = async () => {
-    try {
-      await signInWithPopup(auth, googleProvider);
-    } catch (error) {
-      console.log('Erro ao autenticar com Google', error);
-      notify('Erro ao autenticar com Google', 'error');
-    }
-  };
-
-  const registerWithEmail = async (email: string, password: string) => {
-    return createUserWithEmailAndPassword(auth, email, password);
-  };
 
   const loginWithEmail = async (email: string, password: string) => {
     return signInWithEmailAndPassword(auth, email, password);
@@ -60,9 +45,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const value: AuthContextType = {
     user,
     loading,
-    signInWithGoogle,
     logout,
-    registerWithEmail,
     loginWithEmail,
   };
   return (
