@@ -12,9 +12,9 @@ struct Sensor {
 };
 
 Sensor sensores[] = {
-  { "r32r32jz", 13, 12, 0, 0, 0, 0 },
-  { "x8c6a8sd", 14, 27, 0, 0, 0, 0 },
-  { "8qywe7wt", 26, 34, 0, 0, 0, 0 }
+  { "Lixeira0", 13, 12, 0, 0, 0, 0 },
+  { "Lixeira1", 14, 27, 0, 0, 0, 0 },
+  { "Lixeira2", 26, 34, 0, 0, 0, 0 }
 };
 
 const int TOTAL_SENSORES = sizeof(sensores) / sizeof(sensores[0]);

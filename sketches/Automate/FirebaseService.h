@@ -23,8 +23,8 @@ void processarDados(AsyncResult &r) {
     Firebase.printf("[ERRO] %s → %s (code %d)\n", r.uid().c_str(), r.error().message().c_str(), r.error().code());
 }
 
-void enviarDadosFirebase(Sensor &s, int idx) {
-  String base = "/lixeiras/Lixeira" + String(idx) + "/leituras/";
+void enviarDadosFirebase(Sensor &s) {
+  String base = "/lixeiras/" + s.id + "/leituras/";
 
   Database.set<double>(aCliente, base + "atual/valor", s.atual, processarDados);
   Database.set<long>(aCliente, base + "atual/timestamp", s.tsAtual, processarDados);

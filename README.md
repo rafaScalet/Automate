@@ -1,77 +1,203 @@
-# Firebase
+# 🗑️ Automate | Smart Waste Monitor
+
+## links
+- [Firebase](https://console.firebase.google.com/project/automate-52c0d/overview?hl=pt-br)
+- [Slides/Gamma](https://gamma.app/docs/Projeto-Automate-Lixeira-Inteligente-o22hp5ilv8cbtsv)
+- [Documentação](./Doc-Automate.pdf)
+
+> **Sistema Integrado de Gestão de Resíduos Urbanos via IoT**
+
+    
+
+O **Automate** é uma solução de *Smart City* projetada para otimizar a coleta de lixo. Através de sensores IoT instalados em lixeiras e um dashboard web em tempo real, gestores podem monitorar níveis de ocupação, evitando transbordamentos e otimizando rotas de coleta.
+
+-----
+
+## 📋 Índice
+
+1. [Sobre o Projeto](#-sobre-o-projeto)
+2. [Arquitetura da Solução](#-arquitetura-da-solução)
+3. [Funcionalidades Implementadas](#-funcionalidades-implementadas)
+4. [Stack Tecnológica](#-stack-tecnológica)
+5. [Como Executar o Projeto](#-como-executar-o-projeto)
+6. [Hardware e Conexões](#-hardware-e-conexões)
+7. [Roadmap Futuro (Próximos Passos)](#-roadmap-futuro)
+
+-----
+
+## 📖 Sobre o Projeto
+
+A gestão de resíduos sólidos é um desafio logístico. Coletas agendadas sem dados reais geram dois problemas:
+
+1.  **Ineficiência:** Caminhões recolhendo lixeiras vazias.
+2.  **Insalubridade:** Lixeiras transbordando antes do horário da coleta.
+
+O **Automate** resolve isso instalando um "olho digital" (Sensor Ultrassônico) em cada lixeira, conectado à nuvem, permitindo uma gestão baseada em dados reais.
+
+-----
+
+## 🏗 Arquitetura da Solução
+
+O sistema opera em um fluxo de dados contínuo (End-to-End):
+
+```mermaid
+graph LR
+    A[Sensor HC-SR04] -->|Distância| B(ESP32 / IoT)
+    B -->|HTTP/WiFi| C{Firebase Realtime DB}
+    C -->|WebSocket| D[Dashboard React]
+    E[Admin] -->|Configurações| D
+    D -->|Updates| C
+```
+
+1.  **Coleta:** O sensor mede a distância do topo da lixeira até o lixo (espaço vazio).
+2.  **Transmissão:** O ESP32 processa e envia os dados brutos via Wi-Fi.
+3.  **Armazenamento:** O Firebase recebe os dados e sincroniza em tempo real.
+4.  **Visualização:** O Frontend React aplica a lógica matemática inversa (`Total - Vazio = Cheio`) e exibe o status.
+
+-----
+
+## ✅ Funcionalidades Implementadas
+
+### 1\. Monitoramento em Tempo Real 🟢🟡🔴
+
+  - Visualização instantânea do nível de cada lixeira.
+  - **Feedback Visual Semântico:**
+      - **Verde:** Nível Normal (\< 50%).
+      - **Amarelo:** Nível de Atenção (50% - 79%).
+      - **Vermelho:** Nível Crítico (\> 80%) com alerta pulsante.
+  - Atualização automática via WebSocket (sem necessidade de recarregar a página).
+
+### 2\. Gestão de Sensores (CRUD) ⚙️
+
+  - **Cadastro:** Registro de novas lixeiras vinculando o ID físico do Hardware (ex: `Lixeira0`) a um nome amigável (ex: "Praça da Sé").
+  - **Calibração:** Definição da **Altura Total** da lixeira pelo software, permitindo usar o mesmo sensor em lixeiras de tamanhos diferentes.
+  - **Geolocalização:** Cadastro de Latitude/Longitude para referência.
+  - **Edição/Exclusão:** Correção de dados e remoção de sensores obsoletos.
+
+### 3\. Experiência do Usuário (UX) 🎨
+
+  - Interface moderna e responsiva (Mobile-first).
+  - **Dark Mode** automático/integrado.
+  - Tratamento de erros (Página 404, Feedbacks de salvamento).
+  - Link direto para visualização no **Google Maps**.
+
+-----
+
+## 💻 Stack Tecnológica
+
+### Frontend (Web)
+
+  - **Framework:** [React 19](https://react.dev/) + [Vite](https://vitejs.dev/)
+  - **Linguagem:** TypeScript
+  - **Estilização:** [Tailwind CSS v4](https://tailwindcss.com/)
+  - **Roteamento:** React Router v7
+  - **Ícones:** Lucide React / Iconify
+  - **Qualidade de Código:** Biome.js
+
+### Backend & Cloud
+
+  - **Database:** Firebase Realtime Database (NoSQL)
+  - **Infraestrutura:** Google Cloud Platform (via Firebase)
+
+### Hardware (IoT)
+
+  - **Microcontrolador:** ESP32 DevKit V1
+  - **Sensor:** HC-SR04 (Ultrassônico)
+  - **Linguagem:** C++ (Arduino Framework)
+  - **Bibliotecas:** `WiFi.h`, `FirebaseClient.h`
+
+-----
+
+## 🚀 Como Executar o Projeto
+
+### Pré-requisitos
+
+  - Node.js (v18+)
+  - Conta no Firebase
+
+### 1\. Configuração do Código (Frontend)
+
+```bash
+# Clone o repositório
+git clone https://github.com/seu-usuario/automate.git
+
+# Entre na pasta
+cd automate
+
+# Instale as dependências (Recomendado usar npm para evitar conflitos de lock)
+npm install
+
+# Inicie o servidor de desenvolvimento
+npm run dev
+```
+
+### 2\. Configuração das Chaves (Firebase)
+
+Crie um arquivo `src/firebaseConfig.ts` e adicione suas credenciais:
+
+```typescript
+import { initializeApp } from "firebase/app";
+import { getDatabase } from "firebase/database";
+
+const firebaseConfig = {
+  apiKey: "SUA_API_KEY",
+  authDomain: "seu-projeto.firebaseapp.com",
+  databaseURL: "https://seu-projeto-default-rtdb.firebaseio.com",
+  projectId: "seu-projeto",
+  storageBucket: "seu-projeto.appspot.com",
+  messagingSenderId: "SEU_ID",
+  appId: "SEU_APP_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+export const db = getDatabase(app);
+```
 
 [Link do Projeto](https://console.firebase.google.com/project/automate-52c0d/overview)
 
-# React + TypeScript + Vite
+-----
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 🔌 Hardware e Conexões
 
-Currently, two official plugins are available:
+Esquema de ligação do **ESP32** com o sensor **HC-SR04**:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+| Sensor HC-SR04 | ESP32 (GPIO) |
+| :--- | :--- |
+| **VCC** | VIN (5V) |
+| **GND** | GND |
+| **Trig** | GPIO 13 (Lixeira 0) |
+| **Echo** | GPIO 12 (Lixeira 0) |
 
-## React Compiler
+> *Nota: Para múltiplas lixeiras, repita a lógica de Trig/Echo em outras portas digitais definidas no `Sensors.h`.*
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+-----
 
-## Expanding the ESLint configuration
+## 🔮 Roadmap Futuro
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+O projeto atual representa um **MVP (Produto Mínimo Viável)** robusto. Abaixo estão as funcionalidades planejadas para a versão 2.0 (Fase de Evolução):
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### 🛡️ Segurança & Acesso
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+  - [ ] **Autenticação:** Implementar tela de Login (Firebase Auth) para que apenas administradores autorizados possam cadastrar/editar lixeiras.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### 📊 Inteligência de Dados
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+  - [ ] **Histórico:** Gráficos de evolução de lixo nos últimos 7 dias.
+  - [ ] **Predição:** Usar dados históricos para prever quando uma lixeira ficará cheia (Machine Learning simples).
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### 🗺️ Visualização Avançada
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+  - [ ] **Mapa Interativo:** Substituir os links de texto por um mapa embutido (Leaflet/Mapbox) com pinos coloridos (Verde/Vermelho) espalhados pela cidade.
+
+### 🔋 Otimização de Hardware
+
+  - [ ] **Deep Sleep:** Otimizar o código do Arduino para "dormir" entre leituras e economizar bateria.
+  - [ ] **Case Impermeável:** Migrar para sensores JSN-SR04T (à prova d'água) para uso externo real.
+
+-----
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT - sinta-se livre para contribuir\!
+
+**Desenvolvido com 💚 para Cidades Inteligentes.**
